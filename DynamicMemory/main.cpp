@@ -1,10 +1,16 @@
 #include <iostream>
 using namespace std;
+
+//#define part_1
  
 void FillRand(int arr[], const int n);
 void Print(int* arr, const int n);
 
 int* push_back(int* arr, int& n, int valye);
+int* push_front(int* arr, int& n, int valye);
+int* insert(int* arr, int& n, int valye,int index);
+int* pop_back(int* arr, int& n);
+
 
 void main()
 {
@@ -14,19 +20,35 @@ void main()
 	int* arr = new int[n];
 	FillRand(arr, n);
 	Print(arr, n);
-	int valye;
-	cout << "Введите добавляемое число:"; cin >> valye;
-	arr=push_back(arr, n, valye);
+#ifdef part_1
+    int valye,index;
+	cout << "Введите добавляемое число в конец массива:"; cin >> valye;
+	arr = push_back(arr, n, valye);
 	Print(arr, n);
-
+	cout << "Введите добавляемое число в начало массива:"; cin >> valye;
+	arr = push_front(arr, n, valye);
+	Print(arr, n);
+	cout << "Введите добавляемое число и индекс  по которому он будет расположен в массиве он не должен быть выше" << n - 1 << ":"; cin >> valye; cout << "\t"; cin >> index;
+	do
+		if (index > n - 1)
+		{
+			cout << "Ошибка индекс введен не верно ,введите его заново"; cin >> index;
+		}
+	while (index > n - 1);
+	arr = insert(arr, n, valye, index);
+	Print(arr, n);
+#endif // 
+	pop_back( arr, n);
+	Print(arr, n);
 	delete[]arr;
+
 }
 
 void FillRand(int arr[], const int n)
 {
 	for (int i = 0; i < n; i++)
 	{
-		// через
+		// через арифметику указателей и оператор разименование
 		*(arr + i) = rand() % 100;
 	}
 
@@ -62,5 +84,45 @@ int* push_back(int* arr,  int& n, int valye)
 	// в который можно сохранить значение
 	n++;
 	// 6)После того как мы добавили в массив элемент,колличество элементов массива увеличивается.
+	return arr;
+}
+int* push_front(int* arr, int& n, int valye)
+{
+	int* buffer = new int[n + 1];
+	for (int i = 0; i < n; i++)
+	{
+		buffer[i+1] = arr[i];
+	}
+	delete[]arr;
+	arr = buffer;
+	arr[0] = valye;
+	n++;
+	return arr;
+}
+int* insert(int* arr, int& n, int valye,int index)
+{
+    int* buffer = new int[n + 1];
+    n++;
+	for (int i = 0; i < n; i++)
+	{
+		if (i < index) buffer[i] = arr[i];
+		else if (i == index)buffer[i] = valye;
+		else buffer[i] = arr[i-1];
+	}
+	delete[]arr;
+	arr = buffer;
+	return arr;
+}
+int* pop_back(int* arr, int& n)
+{
+	int* buffer = new int[n - 1];
+
+	for (int i = 0; i < n-1; i++)
+	{
+		buffer[i] = arr[i];
+	}
+	delete[]arr;
+	arr = buffer;
+	n--;
 	return arr;
 }
