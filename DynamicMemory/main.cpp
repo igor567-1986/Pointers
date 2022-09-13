@@ -44,7 +44,7 @@ void main()
 	Print(arr, n);
 	arr = pop_front(arr, n);
 	Print(arr, n);
-	delete[]arr;
+	
 	cout << "Введите индекс по каторому надо удалить число в массиве он не должен быть выше" << n - 1 << ":"; cin >> index;
 	do
 		if (index > n - 1)
@@ -54,6 +54,7 @@ void main()
 	while (index > n - 1);
 	arr = erase(arr, n,index);
 	Print(arr, n);
+delete[]arr;
 }
 
 void FillRand(int arr[], const int n)
