@@ -1,22 +1,31 @@
 #include <iostream>
 using namespace std;
+using std::cin;
+using std::cout;
+using std::endl;
 
 //#define part_1
  
 void FillRand(int arr[], const int n);
-void Print(int* arr, const int n);
+void FillRand(int** arr, const int rows, const int cols);
 
-int* push_back(int* arr, int& n, int valye);
-int* push_front(int* arr, int& n, int valye);
-int* insert(int* arr, int& n, int valye,int index);
+void Print(int* arr, const int n);
+void Print(int** arr, const int rows, const int cols);
+
+int* push_back(int* arr, int& n,  int value);
+int* push_front(int* arr, int& n, int value);
+int* insert(int* arr, int& n, int value,int index);
 int* pop_back(int* arr, int& n);
 int* pop_front(int* arr, int& n);
 int* erase(int* arr, int& n,int index);
 
+//#define DYNAMIC_MEMORY_1
+#define DYNAMIC_MEMORY_2
 
 void main()
 {
 	setlocale(LC_ALL, "");
+#ifdef DYNAMIC_MEMORY_1
 	int n;
 	cout << "Введите размер массива:"; cin >> n;
 	int* arr = new int[n];
@@ -40,11 +49,11 @@ void main()
 	arr = insert(arr, n, valye, index);
 	Print(arr, n);
 #endif // 
-	arr = pop_back( arr, n);
+	arr = pop_back(arr, n);
 	Print(arr, n);
 	arr = pop_front(arr, n);
 	Print(arr, n);
-	
+
 	cout << "Введите индекс по каторому надо удалить число в массиве он не должен быть выше" << n - 1 << ":"; cin >> index;
 	do
 		if (index > n - 1)
@@ -52,20 +61,51 @@ void main()
 			cout << "Ошибка индекс введен не верно ,введите его заново"; cin >> index;
 		}
 	while (index > n - 1);
-	arr = erase(arr, n,index);
+	arr = erase(arr, n, index);
 	Print(arr, n);
-delete[]arr;
+	delete[]arr;
+#endif // DYNAMIC_MEMORY_1
+	int rows, cols;
+	cout << "Введите колличество столбики:"; cin >> rows;
+	cout << "Введите колличество строки:"; cin >> cols;
+	//Создаем массив указателей
+	int** arr = new int* [rows];
+	//Выделяем память под строки
+	for (int i = 0; i < rows; i++)
+	{
+		arr[i] = new int[cols];
+	}
+	FillRand(arr, rows, cols);
+	Print(arr, rows, cols);
+	//Сначало удаляем строки двумерного массива
+	for (int i = 0; i < rows; i++)
+	{
+		delete[]arr[i];
+	}
+	// А потом массив указателей
+	delete[]arr;
 }
+
 
 void FillRand(int arr[], const int n)
 {
 	for (int i = 0; i < n; i++)
 	{
-		// через арифметику указателей и оператор разименование
+		//Через арифметику указателей и оператор разыменования
 		*(arr + i) = rand() % 100;
 	}
-
 }
+void FillRand(int** arr, const int rows, const int cols)
+{
+	for (int i = 0; i < rows; i++)
+	{
+		for (int j = 0; j < cols; j++)
+		{
+			arr[i][j] = rand() % 100;
+		}
+	}
+}
+
 void Print(int* arr, const int n)
 {
 	for (int i = 0; i < n; i++)
@@ -74,7 +114,20 @@ void Print(int* arr, const int n)
 	}
 	cout << endl;
 }
-int* push_back(int* arr,  int& n, int valye)
+void Print(int** arr, const int rows, const int cols)
+{
+	for (int i = 0; i < rows; i++)
+	{
+		for (int j = 0; j < cols; j++)
+		{
+			cout << arr[i][j] << "\t";
+		}
+		cout << endl;
+	}
+}
+
+
+int* push_back(int* arr,  int& n, int value)
 {
 
 	// 1) Создаем буферный массив нужного размера:
@@ -92,14 +145,14 @@ int* push_back(int* arr,  int& n, int valye)
 	arr = buffer;
 
 	// И только после этого можно написать вот так:
-	arr[n] = valye;
+	arr[n] = value;
 	// поскольку только сейчас в массиве аrr ,появился еще один элемент,
 	// в который можно сохранить значение
 	n++;
 	// 6)После того как мы добавили в массив элемент,колличество элементов массива увеличивается.
 	return arr;
 }
-int* push_front(int* arr, int& n, int valye)
+int* push_front(int* arr, int& n, int value)
 {
 	int* buffer = new int[n + 1];
 	for (int i = 0; i < n; i++)
@@ -108,18 +161,18 @@ int* push_front(int* arr, int& n, int valye)
 	}
 	delete[]arr;
 	arr = buffer;
-	arr[0] = valye;
+	arr[0] = value;
 	n++;
 	return arr;
 }
-int* insert(int* arr, int& n, int valye,int index)
+int* insert(int* arr, int& n, int value,int index)
 {
     int* buffer = new int[n + 1];
     n++;
 	for (int i = 0; i < n; i++)
 	{
 		if (i < index) buffer[i] = arr[i];
-		else if (i == index)buffer[i] = valye;
+		else if (i == index)buffer[i] = value;
 		else buffer[i] = arr[i-1];
 	}
 	delete[]arr;
