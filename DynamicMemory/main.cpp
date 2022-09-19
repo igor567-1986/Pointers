@@ -18,6 +18,7 @@ int* insert(int* arr, int& n, int value,int index);
 int* pop_back(int* arr, int& n);
 int* pop_front(int* arr, int& n);
 int* erase(int* arr, int& n,int index);
+int* Allocate(int** arr, int rows, int cols);
 
 //#define DYNAMIC_MEMORY_1
 #define DYNAMIC_MEMORY_2
@@ -66,8 +67,8 @@ void main()
 	delete[]arr;
 #endif // DYNAMIC_MEMORY_1
 	int rows, cols;
-	cout << "Введите колличество столбики:"; cin >> rows;
-	cout << "Введите колличество строки:"; cin >> cols;
+	cout << "Введите колличество строк:"; cin >> rows;
+	cout << "Введите колличество столбиков:"; cin >> cols;
 	//Создаем массив указателей
 	int** arr = new int* [rows];
 	//Выделяем память под строки
@@ -205,16 +206,17 @@ int* pop_front(int* arr, int& n)
 	n--;
 	return arr;
 }
-int* erase(int* arr, int& n,int index)
+int* erase(int* arr, int& n, int index) 
 {
-	int* buffer = new int[n - 1];
-	for (int i = 0; i < n-1 ; i++)
+	int* buffer = new int(n - 1);
+	for (int i = 0; i < n - 1; i++)
 	{
-		if (i < index) buffer[i] = arr[i];
-		else buffer[i] = arr[i+1];
+		if (i < index)buffer[i] = arr[i];
+		else buffer[i] = arr[i + 1];
 	}
 	delete[]arr;
 	arr = buffer;
 	n--;
 	return arr;
 }
+int* Allocate(int** arr, int rows, int cols)
