@@ -1,11 +1,11 @@
-#include<iostream>
+ï»¿#include<iostream>
 using namespace std;
 
 void main()
 {
 	setlocale(LC_ALL, "");
 	int n;
-	cout << "Ââåäèòå ïðåäåë äëÿ ÷èñåë ðÿäà ôèáîíà÷÷è:"; cin >> n;
+	cout << "Ð’Ð²ÐµÐ´Ð¸Ñ‚Ðµ Ð¿Ñ€ÐµÐ´ÐµÐ» Ð´Ð»Ñ Ñ‡Ð¸ÑÐµÐ» Ñ€ÑÐ´Ð° Ñ„Ð¸Ð±Ð¾Ð½Ð°Ñ‡Ñ‡Ð¸:"; cin >> n;
 	if (n == 0)cout << "0";
 	else cout << "0"<< "\t" ;
 	for (int i =0, fib1 = 0, fib2 = 1; fib2 < n;)
@@ -16,7 +16,7 @@ void main()
 		fib2 = i;
 	}
 	cout << endl;
-	cout << "Ââåäèòå ñêîëüêî öèôð èç ðÿäà ôèáîíà÷÷è íàäî âûâåñòè:"; cin >> n;
+	cout << "Ð’Ð²ÐµÐ´Ð¸Ñ‚Ðµ ÑÐºÐ¾Ð»ÑŒÐºÐ¾ Ñ†Ð¸Ñ„Ñ€ Ð¸Ð· Ñ€ÑÐ´Ð° Ñ„Ð¸Ð±Ð¾Ð½Ð°Ñ‡Ñ‡Ð¸ Ð½Ð°Ð´Ð¾ Ð²Ñ‹Ð²ÐµÑÑ‚Ð¸:"; cin >> n;
 	cout << "0" << "\t";
 	for (int i = 0, fib1 = 0, fib2 = 1,fib3=0; i < n-1;i++)
 	{
@@ -25,4 +25,11 @@ void main()
 		fib1 = fib2;
 		fib2 = fib3;
 	}
+	int n;
+	cout << "Ð’Ð²ÐµÐ´Ð¸Ñ‚Ðµ ÐºÐ¾Ð»Ð»Ð¸Ñ‡ÐµÑÑ‚Ð²Ð¾ Ñ‡Ð»ÐµÐ½Ð¾Ð² Ñ€ÑÐ´Ð°:"; cin >> n;
+	for (int i = 0, a = 0, b = 1, c = a + b; i < n; i++, c = (a + b) + (b + c))
+	{
+		cout << a << "\t";
+	}
+	cout << endl;
 }

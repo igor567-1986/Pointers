@@ -13,29 +13,30 @@ void Print(int* arr, const int n);
 void Print(int** arr, const int rows, const int cols);
 
 int* push_back(int* arr, int& n,  int value);
-int** push_row_back(int** arr,int& rows, int& cols);
-
 int* push_front(int* arr, int& n, int value); 
-int** push_row_front(int** arr, int& rows, int& cols );
-
 int* insert(int* arr, int& n, int value,int index);
-int** insert_row(int** arr, int& rows, int& cols,int index);
-
 int* pop_back(int* arr, int& n);
-int** pop_row_back(int** arr, int& rows, int& cols);
-
 int* pop_front(int* arr, int& n);
-int** pop_row_front(int** arr, int& rows, int& cols);
-
 int* erase(int* arr, int& n,int index);
+
+ //2D
+int** Allocate( const int rows, const int cols);
+void Clear(int** arr, const int rows);
+
+int** push_row_back(int** arr, int& rows, const int cols);
+int** push_row_front(int** arr, int& rows,const int cols);
+int** insert_row(int** arr, int& rows,const int cols,int index);
+int** pop_row_back(int** arr, int& rows,const int cols);
+int** pop_row_front(int** arr, int& rows,const int cols);
 int** erase_row(int** arr, int& rows, int& cols,int index);
- 
-void Allocate(int** arr, const int rows, const int cols);
-void Clear(int** arr, const int rows, const int cols);
+
+int** push_col_back(int** arr,const int rows, int& cols);
+int** push_col_front(int** arr, const int rows, int& cols);
 
 
 //#define DYNAMIC_MEMORY_1
 #define DYNAMIC_MEMORY_2
+//#define rows_2d
 
 void main()
 {
@@ -63,7 +64,7 @@ void main()
 	while (index > n - 1);
 	arr = insert(arr, n, valye, index);
 	Print(arr, n);
-#endif // 
+
 	arr = pop_back(arr, n);
 	Print(arr, n);
 	arr = pop_front(arr, n);
@@ -79,32 +80,44 @@ void main()
 	arr = erase(arr, n, index);
 	Print(arr, n);
 	delete[]arr;
+#endif //
 #endif // DYNAMIC_MEMORY_1
 	int rows, cols,index;
 	cout << "Введите колличество строк:"; cin >> rows;
 	cout << "Введите колличество столбиков:"; cin >> cols;
-	int** arr = new int* [rows];
-	
-	Allocate( arr, rows, cols);
+	int** arr = Allocate( rows, cols);
 	FillRand( arr, rows, cols);
 	Print( arr, rows, cols);
+	cout << endl;
+#ifdef rows_2d
 	arr = push_row_back(arr, rows, cols);
 	Print(arr, rows, cols);
+	cout << endl;
 	arr = push_row_front(arr, rows, cols);
 	Print(arr, rows, cols);
+	cout << endl;
 	cout << "Введите индекс строки каторую нужно добавить:"; cin >> index;
-	arr = insert_row(arr, rows, cols,index);
+	arr = insert_row(arr, rows, cols, index);
 	Print(arr, rows, cols);
+	cout << endl;
 	arr = pop_row_back(arr, rows, cols);
 	Print(arr, rows, cols);
+	cout << endl;
 	arr = pop_row_front(arr, rows, cols);
 	Print(arr, rows, cols);
+	cout << endl;
 	cout << "Введите индекс строки каторую нужно удалить:"; cin >> index;
 	arr = erase_row(arr, rows, cols, index);
 	Print(arr, rows, cols);
+	cout << endl;
+#endif // 
 
-	Clear(arr, rows, cols);
-	delete[]arr;
+	arr = push_col_back(arr, rows, cols);
+	Print(arr, rows, cols);
+	Clear(arr, rows);
+	arr = push_col_front(arr, rows, cols);
+	Print(arr, rows, cols);
+	Clear(arr, rows);
 }
 
 
@@ -173,24 +186,6 @@ int* push_back(int* arr,  int& n, int value)
 	// 6)После того как мы добавили в массив элемент,колличество элементов массива увеличивается.
 	return arr;
 } 
-int** push_row_back(int** arr, int& rows, int& cols)
-{
-	int** buffer = new int*[rows + 1];
-	for (int i = 0; i < rows + 1; i++) buffer[i] = new int[cols] {};
-	for (int i = 0; i < rows; i++)
-	{
-		for (int j = 0; j < cols; j++)
-		{
-			buffer[i][j] = arr[i][j];
-		}
-		cout << endl;
-	}
-	delete[]arr;
-	arr = buffer;
-	rows++;
-	return arr;
-} 
-
 int* push_front(int* arr, int& n, int value)
 {
 	int* buffer = new int[n + 1];
@@ -204,24 +199,6 @@ int* push_front(int* arr, int& n, int value)
 	n++;
 	return arr;
 }
-int** push_row_front(int** arr, int& rows, int& cols)
-{
-	int** buffer = new int* [rows + 1];
-	for (int i = 0; i < rows + 1; i++) buffer[i] = new int[cols] {};
-	for (int i = 0; i < rows; i++)
-	{
-		for (int j = 0; j < cols; j++)
-		{
-			buffer[i+1][j] = arr[i][j];
-		}
-		cout << endl;
-	}
-	delete[]arr;
-	arr = buffer;
-	rows++;
-	return arr;
-}
-
 int* insert(int* arr, int& n, int value,int index)
 {
     int* buffer = new int[n + 1];
@@ -236,26 +213,6 @@ int* insert(int* arr, int& n, int value,int index)
 	arr = buffer;
 	return arr;
 } 
-int** insert_row(int** arr, int& rows, int& cols,int index)
-{
-	int** buffer = new int* [rows + 1];
-	for (int i = 0; i < rows + 1; i++) buffer[i] = new int[cols] {};
-	for (int i = 0; i < rows; i++)
-	{
-		for (int j = 0; j < cols; j++)
-		{
-            if(i<index)	buffer[i][j] = arr[i][j];
-			else buffer[i+1][j] = arr[i][j];
-		}
-		cout << endl;
-	}
-	delete[]arr;
-	arr = buffer;
-	rows++;
-	return arr;
-}
-
-
 int* pop_back(int* arr, int& n)
 {
 	int* buffer = new int[n - 1];
@@ -264,30 +221,12 @@ int* pop_back(int* arr, int& n)
 	{
 		buffer[i] = arr[i];
 	}
+
 	delete[]arr;
 	arr = buffer;
 	n--;
 	return arr;
 }
-int** pop_row_back(int** arr, int& rows, int& cols)
-{
-	int** buffer = new int* [rows - 1];
-	for (int i = 0; i < rows -1; i++) buffer[i] = new int[cols] {};
-	for (int i = 0; i < rows; i++)
-	{
-		for (int j = 0; j < cols; j++)
-		{
-			if (i != rows - 1) buffer[i][j] = arr[i][j];
-			else break;
-		}
-		cout << endl;
-	}
-	delete[]arr;
-	arr = buffer;
-	rows--;
-	return arr;
-}
-
 int* pop_front(int* arr, int& n)
 {
 	int* buffer = new int[n - 1];
@@ -301,25 +240,6 @@ int* pop_front(int* arr, int& n)
 	n--;
 	return arr;
 } 
-int** pop_row_front(int** arr, int& rows, int& cols)
-{
-	int** buffer = new int* [rows - 1];
-	for (int i = 0; i < rows - 1; i++) buffer[i] = new int[cols] {};
-	for (int i = 0; i < rows; i++)
-	{
-		for (int j = 0; j < cols; j++)
-		{
-			if (i != rows - 1) buffer[i][j] = arr[i+1][j];
-			else break;
-		}
-		cout << endl;
-	}
-	delete[]arr;
-	arr = buffer;
-	rows--;
-	return arr;
-}
-
 int* erase(int* arr, int& n, int index) 
 {
 	int* buffer = new int(n - 1);
@@ -333,42 +253,124 @@ int* erase(int* arr, int& n, int index)
 	n--;
 	return arr;
 } 
-int** erase_row(int** arr, int& rows, int& cols, int index)
-{
-	int** buffer = new int* [rows -1];
-	for (int i = 0; i < rows - 1; i++) buffer[i] = new int[cols] {};
-	for (int i = 0; i < rows; i++)
-	{
-		for (int j = 0; j < cols; j++)
-		{
-			if (i < index)	buffer[i][j] = arr[i][j];
-			else if (i == rows - 1)break;
-			else  buffer[i][j] = arr[i+1][j];
 
-		}
-		cout << endl;
-	}
-	delete[]arr;
-	arr = buffer;
-	rows--;
+// 2D dynamic arays
+int** Allocate( const int rows, const int cols)
+{
+	// Создаем массив указателей
+	int** arr = new int* [rows];
+	//Выделяем память под строки
+	for (int i = 0; i < rows; i++) arr[i] = new int[cols]{};
 	return arr;
 }
-
-void Allocate(int** arr, const int rows, const int cols)
-{
-	//Выделяем память под строки
-	for (int i = 0; i < rows; i++)
-	{
-		arr[i] = new int[cols];
-	}
-}
-
-void Clear(int** arr, const int rows, const int cols)
-{
-	//Сначало удаляем строки двумерного массива
-	for (int i = 0; i < rows; i++)
+void Clear(int** arr, const int rows)
+{ 
+	for (int i = 0; i < rows; i++)                    
 	{
 		delete[]arr[i];
 	}
+	delete[]arr;
 }
 
+int** push_row_back(int** arr, int& rows, const int cols)
+{
+	//создаем буферный массив указателей
+	int** buffer = new int* [rows+1];
+	// копируем адреса строк из исходного в буферный
+	for (int i = 0; i < rows; i++) buffer[i] = arr[i];
+	delete[] arr;
+	// Создаем новую (добовляемую строку)
+	buffer[rows] = new int[cols] {};
+	rows++;
+	return buffer;
+}
+int** push_row_front(int** arr, int& rows,const int cols)
+{
+	int** buffer = new int* [rows + 1];
+	for (int i = 0; i < rows; i++) buffer[i+1] = arr[i];
+	delete[] arr;
+	buffer[0] = new int[cols] {};
+	rows++;
+	return buffer;
+}
+int** insert_row(int** arr, int& rows,const int cols, int index)
+{
+	int** buffer = new int* [rows + 1];
+	for (int i = 0; i < rows; i++)
+	{
+		if (i < index)	buffer[i] = arr[i];
+		else buffer[i + 1] = arr[i];
+	}
+	delete[] arr;
+	buffer[index] = new int[cols] {};
+	rows++;
+	return buffer;
+	
+
+}
+int** pop_row_back(int** arr, int& rows,const int cols)
+{
+	int** buffer = new int* [rows - 1];
+	for (int i = 0; i < rows; i++)
+	{
+		if (i != rows - 1) buffer[i] = arr[i];
+		else break;
+	}
+	delete[] arr;
+	rows--;
+	return buffer;
+}
+int** pop_row_front(int** arr, int& rows, const int cols)
+{
+	int** buffer = new int* [rows - 1];
+	for (int i = 0; i < rows; i++)
+	{
+		if (i != rows - 1) buffer[i] = arr[i+1];
+		else break;
+	}
+	delete[] arr;
+	rows--;
+	return buffer;
+	
+}
+int** erase_row(int** arr, int& rows, int& cols, int index)
+{
+	int** buffer = new int* [rows - 1];
+	for (int i = 0; i < rows; i++)
+	{
+		if (i < index)	buffer[i] = arr[i];
+		else if (i == rows - 1)break;
+		else  buffer[i] = arr[i + 1];
+	}
+	delete[] arr;
+	rows--;
+	return buffer;
+}
+
+
+int** push_col_back(int** arr,const int rows, int& cols)
+{
+	int** buffer = new int* [rows];
+	for (int i = 0; i < rows; i++)buffer[i] = new int[cols + 1]{};
+	for (int i = 0; i < rows; i++)
+	{
+		for (int j = 0; j < cols ; j++)buffer[i][j] = arr[i][j];
+	    cout << endl;
+	}
+	Clear(arr, rows);
+	cols++;
+	return buffer;
+}
+int** push_col_front(int** arr, const int rows, int& cols)
+{
+	int** buffer = new int* [rows];
+	for (int i = 0; i < rows; i++)buffer[i] = new int[cols + 1]{};
+	for (int i = 0; i < rows; i++)
+	{
+		for (int j = 0; j <= cols; j++)	buffer[i][j] = arr[i][j-1];
+		cout << endl;
+	}
+	Clear(arr, rows);
+	cols++;
+	return arr;
+}
