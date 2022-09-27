@@ -31,9 +31,11 @@ int** pop_row_front(int** arr, int& rows,const int cols);
 int** erase_row(int** arr, int& rows, int& cols,int index);
 
 int** push_col_back(int** arr,const int rows, int& cols);
-int** push_col_front(int** arr, const int rows, int& cols);
+int** push_col_front(int** arr, int& rows, int& cols);
+int** insert_col(int** arr, int& rows, int& cols,int number_cols);
 
-
+int** pop_col_back(int** arr, int& rows, int& cols);
+int** pop_col_front(int** arr, int& rows, int& cols);
 //#define DYNAMIC_MEMORY_1
 #define DYNAMIC_MEMORY_2
 //#define rows_2d
@@ -82,12 +84,12 @@ void main()
 	delete[]arr;
 #endif //
 #endif // DYNAMIC_MEMORY_1
-	int rows, cols,index;
+	int rows, cols, index, number_cols;
 	cout << "Введите колличество строк:"; cin >> rows;
 	cout << "Введите колличество столбиков:"; cin >> cols;
-	int** arr = Allocate( rows, cols);
-	FillRand( arr, rows, cols);
-	Print( arr, rows, cols);
+	int** arr = Allocate(rows, cols);
+	FillRand(arr, rows, cols);
+	Print(arr, rows, cols);
 	cout << endl;
 #ifdef rows_2d
 	arr = push_row_back(arr, rows, cols);
@@ -114,12 +116,14 @@ void main()
 
 	arr = push_col_back(arr, rows, cols);
 	Print(arr, rows, cols);
-	Clear(arr, rows);
 	arr = push_col_front(arr, rows, cols);
 	Print(arr, rows, cols);
-	Clear(arr, rows);
+	cout << "Введите номер столба который хотите добавить: "; cin >> number_cols;
+	arr = insert_col(arr, rows, cols, number_cols);
+	Print(arr, rows, cols);
+	arr = pop_col_back(arr, rows, cols);
+	Print(arr, rows, cols);
 }
-
 
 void FillRand(int arr[], const int n)
 {
@@ -305,8 +309,6 @@ int** insert_row(int** arr, int& rows,const int cols, int index)
 	buffer[index] = new int[cols] {};
 	rows++;
 	return buffer;
-	
-
 }
 int** pop_row_back(int** arr, int& rows,const int cols)
 {
@@ -361,16 +363,58 @@ int** push_col_back(int** arr,const int rows, int& cols)
 	cols++;
 	return buffer;
 }
-int** push_col_front(int** arr, const int rows, int& cols)
+int** push_col_front(int** arr, int& rows, int& cols)
 {
 	int** buffer = new int* [rows];
 	for (int i = 0; i < rows; i++)buffer[i] = new int[cols + 1]{};
 	for (int i = 0; i < rows; i++)
 	{
-		for (int j = 0; j <= cols; j++)	buffer[i][j] = arr[i][j-1];
+		for (int j = 0; j < cols; j++)buffer[i][j+1] = arr[i][j];
 		cout << endl;
 	}
 	Clear(arr, rows);
 	cols++;
-	return arr;
+	return buffer;
+}
+int** insert_col(int** arr, int& rows, int& cols,int number_cols)
+{
+	int** buffer = new int* [rows];
+	for (int i = 0; i < rows; i++)buffer[i] = new int[cols + 1]{};
+	for (int i = 0; i < rows; i++)
+	{
+		for (int j = 0; j < cols; j++)
+		{
+			if (j < number_cols)buffer[i][j] = arr[i][j];
+			else buffer[i][j + 1] = arr[i][j];
+		}
+	}
+	Clear(arr, rows);
+	cols++;
+	return buffer;
+}
+int** pop_col_back(int** arr,  int& rows, int& cols)
+{
+	int** buffer = new int* [rows];
+	for (int i = 0; i < rows; i++)buffer[i] = new int[cols - 1]{};
+	for (int i = 0; i < rows; i++)
+	{
+		for(int j=0;j<cols-1;j++)	buffer[i][j] = arr[i][j];
+		cout << endl;
+	}
+	Clear(arr, rows);
+	cols--;
+	return buffer;
+}
+int** pop_col_front(int** arr, int& rows, int& cols)
+{
+	int** buffer = new int* [rows];
+	for (int i = 0; i < rows; i++)buffer[i] = new int[cols - 1]{};
+	for (int i = 0; i < rows; i++)
+	{
+		for (int j = 0; j < cols - 1; j++)	buffer[i][j] = arr[i][j-1];
+		cout << endl;
+	}
+	Clear(arr, rows);
+	cols--;
+	return buffer;
 }
