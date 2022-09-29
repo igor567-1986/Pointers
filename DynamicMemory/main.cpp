@@ -196,16 +196,18 @@ template<typename T>T* push_back(T* arr,  int& n,T value)
 {
 
 	// 1) Создаем буферный массив нужного размера:
-	T* buffer = new T[++n];
+	T* buffer = new T[n+1];
 	//2) Копируем исходный массив в буферный:
 	for (int i = 0; i < n; i++)buffer[i] = arr[i];
 	// 3) после того как все данные скопированны из исходного массива 
 	// он больше не нужен и его надо удалить
 	delete[]arr;
+	arr = buffer;
 	// И только после этого можно написать вот так:
 	arr[n] = value;
 	// 6)После того как мы добавили в массив элемент,колличество элементов массива увеличивается.
-	return buffer;
+	n++;
+    return arr;
 } 
 template<typename T>T* push_front(T* arr, int& n, T value)
 {
@@ -392,7 +394,7 @@ template<typename T>void pop_col_front(T** arr,const int rows, int& cols)
 	}
 	cols--;
 }
-template<typename T>void erase_col(T* arr,const int rows, int& cols, int number_cols)
+template<typename T>void erase_col(T** arr,const int rows, int& cols, int number_cols)
 {
 	for (int i = 0; i < rows; i++)
 	{
