@@ -404,7 +404,7 @@ template<typename T>void pop_col_front(T** arr,const int rows, int& cols)
 	}
 	cols--;
 }
-template<typename T>void erase_col(T* arr,const int rows, int& cols, int number_cols)
+template<typename T>void erase_col(T** arr,const int rows, int& cols, int number_cols)
 {
 	for (int i = 0; i < rows; i++)
 	{
