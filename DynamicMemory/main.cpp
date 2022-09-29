@@ -18,7 +18,7 @@ template<typename T>void Print(T** arr, const int rows, const int cols);
 
 template<typename T>T* push_back(T* arr, int& n,  T value);
 template<typename T>T* push_front(T* arr, int& n, T value);
-template<typename T>T* insert(T* arr, int& n, int value,T index);
+template<typename T>T* insert(T* arr, int& n,T value,int index);
 template<typename T>T* pop_back(T* arr, int& n);
 template<typename T>T* pop_front(T* arr, int& n);
 template<typename T>T* erase(T* arr, int& n,int index);
@@ -220,7 +220,7 @@ template<typename T>T* push_front(T* arr, int& n, T value)
 	return buffer;
 }
 
-template<typename T>T* insert(T* arr, int& n, int value,int index)
+template<typename T>T* insert(T* arr, int& n, T value,int index)
 {
     T* buffer = new T[++n];
    	for (int i = 0; i < n; i++)
@@ -320,14 +320,9 @@ template<typename T>T** pop_row_front(T** arr, int& rows, const int cols)
 {
 	delete[]arr[0];
 	T** buffer = new T* [--rows ]{};
-	for (int i = 0; i < rows; i++)
-	{
-		if (i != rows - 1) buffer[i] = arr[i+1];
-		else break;
-	}
+	for (int i = 0; i < rows; i++)buffer[i] = arr[i+1];	
 	delete[] arr;
-	return buffer;
-	
+	return buffer;	
 }
 template<typename T>T** erase_row(T** arr, int& rows, int& cols, int index)
 {
