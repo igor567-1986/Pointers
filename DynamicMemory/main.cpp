@@ -18,7 +18,7 @@ template<typename T>void Print(T** arr, const int rows, const int cols);
 
 template<typename T>T* push_back(T* arr, int& n,  T value);
 template<typename T>T* push_front(T* arr, int& n, T value);
-template<typename T>T* insert(T* arr, int& n, int value,T index);
+template<typename T>T* insert(T* arr, int& n, T value,int index);
 template<typename T>T* pop_back(T* arr, int& n);
 template<typename T>T* pop_front(T* arr, int& n);
 template<typename T>T* erase(T* arr, int& n,int index);
@@ -143,11 +143,7 @@ void main()
 
 void FillRand(int arr[], const int n)
 {
-	for (int i = 0; i < n; i++)
-	{
-		//Через арифметику указателей и оператор разыменования
-		*(arr + i) = rand() % 100;
-	}
+	for (int i = 0; i < n; i++)*(arr + i) = rand() % 100;	
 }
 void FillRand(double arr[], const int n)
 {
@@ -220,7 +216,7 @@ template<typename T>T* push_front(T* arr, int& n, T value)
 	return buffer;
 }
 
-template<typename T>T* insert(T* arr, int& n, int value,int index)
+template<typename T>T* insert(T* arr, int& n, T value,int index)
 {
     T* buffer = new T[++n];
    	for (int i = 0; i < n; i++)
@@ -275,24 +271,11 @@ template<typename T>void Clear(T** arr, const int rows)
 
 template<typename T>T** push_row_back(T** arr, int& rows, const int cols)
 {
-	//создаем буферный массив указателей
-	T** buffer = new T* [rows+1];
-	// копируем адреса строк из исходного в буферный
-	for (int i = 0; i < rows; i++) buffer[i] = arr[i];
-	delete[] arr;
-	// Создаем новую (добовляемую строку)
-	buffer[rows] = new int[cols] {};
-	rows++;
-	return buffer;
+	return push_back(arr, rows, new T[cols]{});
 }
 template<typename T>T** push_row_front(T** arr, int& rows,const int cols)
 {
-	T** buffer = new T* [rows + 1];
-	for (int i = 0; i < rows; i++) buffer[i+1] = arr[i];
-	delete[] arr;
-	buffer[0] = new int[cols] {};
-	rows++;
-	return buffer;
+	return push_front(arr, rows, new T[cols]{});
 }
 template<typename T>T** insert_row(T** arr, int& rows,const int cols, int index)
 {
